@@ -33,4 +33,11 @@ cd xlt-test
 xlt -p test_latex_file
 ```
 
-> You can also use `-f` argument for enforce the generator to overwite the possible existed files.
+Options
+---
+Here are the available options for *XLT* generator:
+
+* `-h`              Show a brief help.
+* `-f`              Enforces the generator to overwite the possible existed files.
+* `-p PAPER_NAME`   Generates a paper template named as `PAPER_NAME.tex`.
+* `-u`              Updates the XLT from its online repository(`Git` is needed for this op.)

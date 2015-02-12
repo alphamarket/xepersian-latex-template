@@ -26,10 +26,10 @@ while getopts 'fp:uh' flag; do
             echo "$package"
             echo " "
             echo "options:"
-            echo "  -h                      show brief help"
-            echo "  -f                      force operations"
-            echo "  -p PAPER_NAME           creates paper template file"
-            echo "  -u                      update XLT from online repository"
+            echo "  -h                      Show a brief help"
+            echo "  -f                      Enforce overwite the possible existed files"
+            echo "  -p PAPER_NAME           Creates paper template file"
+            echo "  -u                      Update XLT from its online repository"
             exit 0 ;;
         # anything else
         *)
