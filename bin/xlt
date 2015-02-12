@@ -7,13 +7,18 @@ function __output()  { local txt; txt="$1"; if [ "${#txt}" -ne 0 ]; then echo -e
 function __dieOnEmpty() { local VAL=$1; local OPT=$2; [[ -z "${VAL}" || "${VAL}" =~ ^[[:space:]]*$ || "${VAL}" == -* ]] && { echo -e "\n  ERROR: Missing argument for option: -${OPT}\n" >&2; exit 1; } }
 function __fileAdded() { echo -e "    \e[32m+\e[m $1"; }
 function __fileSkipped() { echo -e "    \e[33m[SKIPPED]\e[m $1"; }
+# flag force opt to false by default
 force=false
+# extract and process options
 while getopts 'hfp:' flag; do
     case "${flag}" in
+        # the force flag
         f) force=true ;;
+        # the paper template flag
         p)
             __dieOnEmpty "${OPTARG}" "${flag}"
             paper="${OPTARG%.*}" ;;
+        # output help
         h) 
             echo "$package"
             echo " "
@@ -21,29 +26,41 @@ while getopts 'hfp:' flag; do
             echo "  -h                      show brief help"
             echo "  -f                      force operations"
             echo "  -p PAPER_NAME           creates paper template file"
-            exit 0
-        ;;
-        *) exit 1 ;;
+            exit 0 ;;
+        # anything else
+        *)
+            bash ${BASH_SOURCE[0]} -h 
+            exit 1 ;;
     esac
 done
+# the default main latex template file's extension  
 template_extension='template.tex'
+# script absolute path
 SCRIPT_ABSOLUTE_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
+# check if {paper tamplate} has been requested
 if ! [[ -z "$paper" ]]; then
-    __output "Creating \"$paper.tex\" paper...\n"
-    added=0
-    all=1
-    (! [[ -e $paper.tex ]] || $force ) && cp "$SCRIPT_ABSOLUTE_PATH/../paper/paper.$template_extension" $paper.tex && __fileAdded $paper.tex && added=$((added +1)) || __fileSkipped $paper.tex
+    # initiate a acknowledgement of the commend
+    __output "Creating \"\e[33m$paper.tex\e[m\" paper...\n"
+    # number of skipped files 
+    skipped=0
+    # safe-copy the main latex template file
+    (! [[ -e $paper.tex ]] || $force ) && cp "$SCRIPT_ABSOLUTE_PATH/../paper/paper.$template_extension" $paper.tex 2>/dev/null && __fileAdded $paper.tex || __fileSkipped $paper.tex && skipped=$((skipped + 1))
+    # for each file except main latex template file
     for file in $(ls $SCRIPT_ABSOLUTE_PATH/../paper -I "paper.$template_extension" -I "*.pdf"); do
-        all=$((all + 1));
+        # perform a safe-copy
         if ! [ -e $file ] || $force ; then
-            cp "$SCRIPT_ABSOLUTE_PATH/../paper/$file" $file && __fileAdded $file && added=$((added +1))
+            cp "$SCRIPT_ABSOLUTE_PATH/../paper/$file" $file 2>/dev/null && __fileAdded $file || __fileSkipped $file && skipped=$((skipped +1))
         else
             __fileSkipped $file
+            skipped=$((skipped +1))
         fi
     done
-    if ! [[ $added == $all ]]; then
+    # if there were any skipped file 
+    if ! [ $skipped -eq 0 ]; then
+        # promt a tip
         __log "\nNot all files have been copied; use '-f' to force copy operation.";
     fi
+    # done
     exit 0
 fi
 # output help statement
