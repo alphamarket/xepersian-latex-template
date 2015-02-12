@@ -1,5 +1,5 @@
 #!/bin/bash
-package='XePersian Template Generator'
+package='XePersian LaTeX Template Generator'
 skipped_files=false;
 function __error()  { echo -e "\e[31m$1\n[ ABORT ]\e[m"; exit 0; }
 function __log()    { echo -e "\e[33m$1\e[m"; }
@@ -10,8 +10,9 @@ function __fileAdded() { echo -e "    \e[32m+\e[m $1"; }
 function __fileSkipped() { skipped_files=true; echo -e "    \e[33m[SKIPPED]\e[m $1"; }
 # flag force opt to false by default
 force=false
+update=false
 # extract and process options
-while getopts 'hfp:' flag; do
+while getopts 'fp:uh' flag; do
     case "${flag}" in
         # the force flag
         f) force=true ;;
@@ -19,6 +20,7 @@ while getopts 'hfp:' flag; do
         p)
             __dieOnEmpty "${OPTARG}" "${flag}"
             paper="${OPTARG%.*}" ;;
+        u)  update=true ;;
         # output help
         h) 
             echo "$package"
@@ -27,6 +29,7 @@ while getopts 'hfp:' flag; do
             echo "  -h                      show brief help"
             echo "  -f                      force operations"
             echo "  -p PAPER_NAME           creates paper template file"
+            echo "  -u                      update XLT from online repository"
             exit 0 ;;
         # anything else
         *)
@@ -38,6 +41,26 @@ done
 template_extension='template.tex'
 # script absolute path
 SCRIPT_ABSOLUTE_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
+# check if updating the XLT?
+if $update ; then
+    # validate the existance of git folder
+    if ! [[ -e "$SCRIPT_ABSOLUTE_PATH/../.git" ]]; then
+        __error "No git repository found...";
+    fi
+    # save current pwd
+    cpwd=`pwd`
+    # change directory to XLT root directory
+    cd "$SCRIPT_ABSOLUTE_PATH/.."
+    # stash all changes
+    git stash
+    # pull updates
+    git pull
+    # assign executable bit to newly updated repo
+    chmod +x $SCRIPT_ABSOLUTE_PATH -R 
+    # change to previous pwd directory
+    cd $cpwd
+    # WE DO NOT EXIT HERE ALLOWING SCRIPT TO CONTINUE WITH OTHER POSSIBLE OPTIONS
+fi 
 # check if {paper tamplate} has been requested
 if ! [[ -z "$paper" ]]; then
     # initiate a acknowledgement of the commend
