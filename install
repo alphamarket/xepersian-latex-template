@@ -30,9 +30,9 @@ if  ! [ -e $HOME/.bash_profile ];then
 else 
 	if [ $(grep -F "source \"\$HOME/.xlt/.bashxlt\"" "$HOME/.bash_profile" | wc -l) -eq 0 ]; then
 	    echo '[[ -e "$HOME/.xlt/.bashxlt" ]] && source "$HOME/.xlt/.bashxlt"' >> "$HOME/.bash_profile"
-	    if [ $(grep -F "source \"\$HOME/.bash_profile\"" "$HOME/.bashrc" | wc -l) -eq 0 ]; then
-	        echo '[[ -e "$HOME/.bash_profile" ]] && source "$HOME/.bash_profile"' >> "$HOME/.bashrc"
-	    fi;
 	fi;
+	if [ $(grep -F "source \"\$HOME/.bash_profile\"" "$HOME/.bashrc" | wc -l) -eq 0 ]; then
+        echo '[[ -e "$HOME/.bash_profile" ]] && source "$HOME/.bash_profile"' >> "$HOME/.bashrc"
+    fi;
 fi
 echo -e "\e[32mDONE\e[m"
