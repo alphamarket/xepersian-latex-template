@@ -35,4 +35,5 @@ else
         echo '[[ -e "$HOME/.bash_profile" ]] && source "$HOME/.bash_profile"' >> "$HOME/.bashrc"
     fi;
 fi
+chmod +x bin -R 
 echo -e "\e[32mDONE\e[m"

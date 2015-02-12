@@ -33,4 +33,4 @@ cd xlt-test
 xlt -p test_latex_file
 ```
 
-> You can also use `-f` argument for enforce the generator to override the possible existed files.
+> You can also use `-f` argument for enforce the generator to overwite the possible existed files.
