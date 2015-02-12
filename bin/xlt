@@ -1,0 +1,51 @@
+#!/bin/bash
+package='XeLaTex Template Generator'
+function __error()  { echo -e "\e[31m$1\n[ ABORT ]\e[m"; exit 0; }
+function __log()    { echo -e "\e[33m$1\e[m"; }
+function __success(){ echo -e "\e[32m$1\e[m"; }
+function __output()  { local txt; txt="$1"; if [ "${#txt}" -ne 0 ]; then echo -e "$txt"; fi }
+function __dieOnEmpty() { local VAL=$1; local OPT=$2; [[ -z "${VAL}" || "${VAL}" =~ ^[[:space:]]*$ || "${VAL}" == -* ]] && { echo -e "\n  ERROR: Missing argument for option: -${OPT}\n" >&2; exit 1; } }
+function __fileAdded() { echo -e "    \e[32m+\e[m $1"; }
+function __fileSkipped() { echo -e "    \e[33m[SKIPPED]\e[m $1"; }
+force=false
+while getopts 'hfp:' flag; do
+    case "${flag}" in
+        f) force=true ;;
+        p)
+            __dieOnEmpty "${OPTARG}" "${flag}"
+            paper="${OPTARG%.*}" ;;
+        h) 
+            echo "$package"
+            echo " "
+            echo "options:"
+            echo "  -h                      show brief help"
+            echo "  -f                      force operations"
+            echo "  -p PAPER_NAME           creates paper template file"
+            exit 0
+        ;;
+        *) exit 1 ;;
+    esac
+done
+template_extension='template.tex'
+SCRIPT_ABSOLUTE_PATH=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
+if ! [[ -z "$paper" ]]; then
+    __output "Creating \"$paper.tex\" paper...\n"
+    added=0
+    all=1
+    (! [[ -e $paper.tex ]] || $force ) && cp "$SCRIPT_ABSOLUTE_PATH/../paper/paper.$template_extension" $paper.tex && __fileAdded $paper.tex && added=$((added +1)) || __fileSkipped $paper.tex
+    for file in $(ls $SCRIPT_ABSOLUTE_PATH/../paper -I "paper.$template_extension" -I "*.pdf"); do
+        all=$((all + 1));
+        if ! [ -e $file ] || $force ; then
+            cp "$SCRIPT_ABSOLUTE_PATH/../paper/$file" $file && __fileAdded $file && added=$((added +1))
+        else
+            __fileSkipped $file
+        fi
+    done
+    if ! [[ $added == $all ]]; then
+        __log "\nNot all files have been copied; use '-f' to force copy operation.";
+    fi
+    exit 0
+fi
+# output help statement
+bash ${BASH_SOURCE[0]} -h
+exit 1;

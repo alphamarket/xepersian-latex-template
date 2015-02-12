@@ -1,0 +1,36 @@
+#!/bin/bash
+clear
+cd "$HOME"
+command -v git >/dev/null 2>&1 || {
+    echo -e "\e[33mgit\e[31m not found...\n[ Aborting ]\e[m"
+    exit 1;
+}
+rm "$HOME/.xlt" -fr
+mkdir "$HOME/.xlt"
+chmod 775 "$HOME/.xlt" -R
+cd "$HOME/.xlt"
+echo -e "Starting to cloning \e[33mXePerisan LaTeX Templates\e[m..."
+echo -e "\e[33m\c"
+git clone --recursive https://github.com/noise2/xepersian-latex-template.git .
+echo -e "\e[m\c"
+cd "$HOME/.xlt"
+echo -e "Modifing \e[33m\$HOME\e[m varibale content ..."
+echo '#!/bin/bash
+PATH="$HOME/.xlt/bin:$PATH"' > .bashxlt
+if ! [ -e .bashxlt ]; then
+    echo -e "\e[31mCouldn't create \e[33m.bashzg\e[m file!\n[ Aborting ]\e[m" >&2
+    exit 1;
+fi;
+cd "$HOME"
+chmod 775 "$HOME/.xlt" -R
+echo -e "Adding \e[33mxlt\e[m to \$PATH"
+if  ! [ -e $HOME/.bash_profile ];then
+    echo -e "\e[31m Couldn't find \e[33m$HOME/.bash_profile\e[31m; please add following lines in a bash loader file...\e[m" 
+    echo 'source $HOME/.xlt/.bashxlt'
+else 
+	if [ $(grep -F "source \"\$HOME/.xlt/.bashxlt\"" "$HOME/.bash_profile" | wc -l) -eq 0 ]; then
+	    echo 'source "$HOME/.xlt/.bashxlt"' >> "$HOME/.bash_profile"
+	fi;
+fi
+#chmod a-w "$HOME/.xlt"
+#echo "done"
