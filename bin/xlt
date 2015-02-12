@@ -1,5 +1,5 @@
 #!/bin/bash
-package='XeLaTex Template Generator'
+package='XePersian Template Generator'
 function __error()  { echo -e "\e[31m$1\n[ ABORT ]\e[m"; exit 0; }
 function __log()    { echo -e "\e[33m$1\e[m"; }
 function __success(){ echo -e "\e[32m$1\e[m"; }
