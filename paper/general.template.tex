@@ -33,12 +33,14 @@
 \newcommand{\halfspace}{\hspace{0pt}}
 % define a new command as {half-space} in persian
 \newcommand{\نیمفاصله}{\halfspace}
+% define a shortcut for half-space in general
+\renewcommand{\ }{\halfspace}
 %
 % DOCUMENT BEGIN
 %
 \begin{document}
 \title{عنوان}
-\author{نام نام\نیمفاصله خانوادگی}
+\author{نام نام\ خانوادگی}
 \date{\today}
 \maketitle
 \null
@@ -53,7 +55,7 @@
 % and everything will be automatically taking care of
 % Note:
 %    The compilation procedure should be as following:
-%        { XeLatex -> Bibtex -> XeLatex -> XeLatex -> PDFViewer }
+%        { XeLatex -> PDFViewer -> Bibtex -> PDFViewer }
 %    In order to but reference to work.
 %\section{مراجع}
 %\begingroup
