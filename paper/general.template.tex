@@ -35,6 +35,8 @@
 \newcommand{\نیمفاصله}{\halfspace}
 % define a shortcut for half-space in general
 \renewcommand{\ }{\halfspace}
+% define a new command for ease of use for rendering reference
+\newcommand{\renderref}[1] { \begingroup \let\clearpage\relax \include{#1} \endgroup }
 %
 % DOCUMENT BEGIN
 %
@@ -58,8 +60,5 @@
 %        { XeLatex -> PDFViewer -> Bibtex -> PDFViewer }
 %    In order to but reference to work.
 %\section{مراجع}
-%\begingroup
-%    \let\clearpage\relax
-%    \include{reference}
-%\endgroup
+%\renderref{reference}
 \end{document}
