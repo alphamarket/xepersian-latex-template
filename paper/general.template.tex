@@ -8,7 +8,7 @@
                 graphicx, setspace, fontspec, caption,
                 subcaption, float, polyglossia, rotating,
                 lscape, pdflscape, indentfirst, tocloft,
-                multirow, amsmath
+                multirow, amsmath, currfile
             }
 % paragraph related package
 \usepackage[parfill]{parskip}
@@ -44,4 +44,20 @@
 \null
 \vfill
 \newpage
+%
+% Table Of Contents
+%
+%\tableofcontents
+% Un-comment these if you are referencing
+% Put your references in 'reference.bib' file 
+% and everything will be automatically taking care of
+% Note:
+%    The compilation procedure should be as following:
+%        { XeLatex -> Bibtex -> XeLatex -> XeLatex -> PDFViewer }
+%    In order to but reference to work.
+%\section{مراجع}
+%\begingroup
+%    \let\clearpage\relax
+%    \include{reference}
+%\endgroup
 \end{document}
