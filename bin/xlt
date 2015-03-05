@@ -63,6 +63,10 @@ if $update ; then
 fi 
 # check if {paper tamplate} has been requested
 if ! [[ -z "$paper" ]]; then
+	# fetch the extension name
+    ext=`echo $paper | cut -d':' -f1`
+	# fetch the original paper name    
+	paper=`echo $paper | cut -d':' -f2`
     # initiate a acknowledgement of the commend
     __output "Creating \"\e[33m$paper.tex\e[m\" paper...\n"
     # safe-copy the main latex template file
