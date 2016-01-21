@@ -1,6 +1,6 @@
 \documentclass[10pt,a4paper]{article}
 % for margining standards
-\usepackage[left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry}
+\usepackage[left=2.5cm,right=3cm,top=3cm,bottom=2.5cm,includehead=false,headsep=1cm,footnotesep=.5cm]{geometry}
 % for counting references as a section
 \usepackage[numbib,notlof,notlot,nottoc]{tocbibind}
 % useful packages
@@ -10,12 +10,17 @@
                 lscape, pdflscape, indentfirst, tocloft,
                 multirow, mathtools, currfile
             }
+% centering the 
+\usepackage[justification=centering]{caption}
 % paragraph related package
 \usepackage[parfill]{parskip}
-% use bzar font(THIS MUST BE LOADED BEFORE XePerian PACKAGE)
-\setmainfont{BZar.ttf}
 % the dear XePersian package
 \usepackage{xepersian}
+% font's adjustments
+\settextfont{XB Zar}\fontsize{12}{6}\selectfont
+\setlatintextfont{Times New Roman}\fontsize{11}{6}
+\baselineskip=.9cm
+\DefaultMathsDigits
 %
 % General settings goes here.
 %
@@ -29,14 +34,12 @@
 \graphicspath{ {images/} }
 % make table of content dotted
 \renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
-% define a new command as {half-space} in english
-\newcommand{\halfspace}{\hspace{0pt}}
-% define a new command as {half-space} in persian
-\newcommand{\نیمفاصله}{\halfspace}
 % define a shortcut for half-space in general
-\renewcommand{\ }{\halfspace}
+\renewcommand{\ }{\hspace{0pt}}
 % define a new command for ease of use for rendering reference
 \newcommand{\renderref}[1] { \begingroup \let\clearpage\relax \include{#1} \endgroup }
+% an arabic footnote shortcut
+\newcommand{\فوتنت}[1]{\footnote{\lr{[#1]}}}
 %
 % DOCUMENT BEGIN
 %
@@ -45,16 +48,14 @@
 \author{نام نام\ خانوادگی}
 \date{\today}
 \maketitle
-\null
-\vfill
-% make this very first page un-numbered
-\thispagestyle{empty}
-\setcounter{page}{0}
-\newpage
+\قسمت{چکیده}
 %
-% Table Of Contents
+% Table Of contents/figures/tables
 %
-%\tableofcontents
+\tableofcontents
+%\listoffigures
+%\listoftables
+\قسمت{مقدمه}
 % Un-comment these if you are referencing
 % Put your references in 'reference.bib' file 
 % and everything will be automatically taking care of
@@ -63,5 +64,5 @@
 %        { XeLatex -> PDFViewer -> Bibtex -> PDFViewer }
 %    In order to but reference to work.
 %\section{مراجع}
-%\renderref{reference}
+%\renderref{references}
 \end{document}
