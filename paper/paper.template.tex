@@ -10,7 +10,7 @@
                 lscape, pdflscape, indentfirst, tocloft,
                 multirow, mathtools, currfile
             }
-% centering the 
+% centering the captions
 \usepackage[justification=centering]{caption}
 % paragraph related package
 \usepackage[parfill]{parskip}
@@ -39,7 +39,7 @@
 % define a new command for ease of use for rendering reference
 \newcommand{\renderref}[1] { \begingroup \let\clearpage\relax \include{#1} \endgroup }
 % an arabic footnote shortcut
-\newcommand{\فوتنت}[1]{\footnote{\lr{[#1]}}}
+\newcommand{\فوتنت}[1]{\footnote{\lr{#1}}}
 %
 % DOCUMENT BEGIN
 %
@@ -63,6 +63,6 @@
 %    The compilation procedure should be as following:
 %        { XeLatex -> PDFViewer -> Bibtex -> PDFViewer }
 %    In order to but reference to work.
-%\section{مراجع}
+%\قسمت{مراجع}
 %\renderref{references}
 \end{document}
