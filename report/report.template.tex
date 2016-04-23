@@ -1,0 +1,60 @@
+\documentclass[12pt,a4paper]{article}
+% for margining standards
+\usepackage[left=2.5cm,right=3cm,top=3cm,bottom=2.5cm,includehead=false,headsep=1cm,footnotesep=.5cm]{geometry}
+% for counting references as a section
+\usepackage[numbib,notlof,notlot,nottoc]{tocbibind}
+% useful packages
+\usepackage{
+                graphicx, setspace, fontspec, caption,
+                subcaption, float, polyglossia, rotating,
+                lscape, pdflscape, indentfirst, tocloft,
+                multirow, mathtools, currfile
+            }
+% centering the captions
+\usepackage[justification=centering]{caption}
+% paragraph related package
+\usepackage[parfill]{parskip}
+% the dear XePersian package
+\usepackage{xepersian}
+% font's adjustments
+\settextfont{XB Zar}\fontsize{12}{6}\selectfont
+\setlatintextfont{Times New Roman}\fontsize{11}{6}
+\baselineskip=.9cm
+\DefaultMathsDigits
+%
+% General settings goes here.
+%
+% lines space
+\renewcommand{\baselinestretch}{1.5}
+% paragraph first line indention
+\setlength{\parindent}{1cm}
+% paragraph spacing
+\setlength{\parskip}{1em}
+% set graphics' path
+\graphicspath{ {images/} }
+% make table of content dotted
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+% define a shortcut for half-space in general
+\renewcommand{\ }{\hspace{0pt}}
+% define a new command for ease of use for rendering reference
+\newcommand{\renderref}[1] { \begingroup \let\clearpage\relax \include{#1} \endgroup }
+% an arabic footnote shortcut
+\newcommand{\فوتنت}[1]{\footnote{\lr{#1}}}
+%
+% DOCUMENT BEGIN
+%
+\begin{document}
+\title{گزارش هفتگی}
+\author{داریوش حسن\ پور آده}
+\date{\today}
+\maketitle
+\thispagestyle{empty}
+\noindent فعالیت\ های هفته\ ی گذشته:
+\begin{enumerate}
+\فقره
+\end{enumerate}
+\noindent برنامه\ های هفته\ ی جاری:
+\begin{enumerate}
+\فقره
+\end{enumerate}
+\end{document}
