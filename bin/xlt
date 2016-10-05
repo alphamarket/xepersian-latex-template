@@ -12,7 +12,7 @@ function __fileSkipped() { skipped_files=true; echo -e "    \e[33m[SKIPPED]\e[m 
 force=false
 update=false
 # extract and process options
-while getopts 'fp:uh' flag; do
+while getopts 'fr:p:uh' flag; do
     case "${flag}" in
         # the force flag
         f) force=true ;;
@@ -20,6 +20,9 @@ while getopts 'fp:uh' flag; do
         p)
             __dieOnEmpty "${OPTARG}" "${flag}"
             paper="${OPTARG%.*}" ;;
+        r)
+            __dieOnEmpty "${OPTARG}" "${flag}"
+            report="${OPTARG%.*}" ;;
         u)  update=true ;;
         # output help
         h) 
@@ -29,6 +32,7 @@ while getopts 'fp:uh' flag; do
             echo "  -h                      Show a brief help"
             echo "  -f                      Enforce overwite the possible existed files"
             echo "  -p PAPER_NAME           Creates paper template file"
+            echo "  -r REPORT_NAME          Creates report template file"
             echo "  -u                      Update XLT from its online repository"
             exit 0 ;;
         # anything else
@@ -63,6 +67,10 @@ if $update ; then
 fi 
 # check if {paper tamplate} has been requested
 if ! [[ -z "$paper" ]]; then
+	# fetch the extension name
+    ext=`echo $paper | cut -d':' -f1`
+	# fetch the original paper name    
+	paper=`echo $paper | cut -d':' -f2`
     # initiate a acknowledgement of the commend
     __output "Creating \"\e[33m$paper.tex\e[m\" paper...\n"
     # safe-copy the main latex template file
@@ -72,6 +80,32 @@ if ! [[ -z "$paper" ]]; then
         # perform a safe-copy
         if ! [ -e $file ] || $force ; then
             cp "$SCRIPT_ABSOLUTE_PATH/../paper/$file" $file 2>/dev/null && __fileAdded $file || __fileSkipped $file
+        else
+            __fileSkipped $file
+            skipped=$((skipped +1))
+        fi
+    done
+    # if there were any skipped file 
+    if $skipped_files ; then
+        # promt a tip
+        __log "\nNot all files have been copied; use '-f' to force overwite.";
+    fi
+    # done
+    exit 0
+elif ! [[ -z "$report" ]]; then
+	# fetch the extension name
+    ext=`echo $report | cut -d':' -f1`
+	# fetch the original paper name    
+	paper=`echo $report | cut -d':' -f2`
+    # initiate a acknowledgement of the commend
+    __output "Creating \"\e[33m$paper.tex\e[m\" report...\n"
+    # safe-copy the main latex template file
+    (! [[ -e $paper.tex ]] || $force ) && cp "$SCRIPT_ABSOLUTE_PATH/../report/report.$template_extension" $paper.tex 2>/dev/null && __fileAdded $paper.tex || __fileSkipped $paper.tex
+    # for each file except main latex template file
+    for file in $(ls $SCRIPT_ABSOLUTE_PATH/../report -I "report.$template_extension" -I "*.pdf"); do
+        # perform a safe-copy
+        if ! [ -e $file ] || $force ; then
+            cp "$SCRIPT_ABSOLUTE_PATH/../report/$file" $file 2>/dev/null && __fileAdded $file || __fileSkipped $file
         else
             __fileSkipped $file
             skipped=$((skipped +1))
