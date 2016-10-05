@@ -24,16 +24,13 @@ fi;
 cd "$HOME"
 chmod 775 "$HOME/.xlt" -R
 echo -e "Adding \e[33mxlt\e[m to \$PATH"
-if  ! [ -e $HOME/.bash_profile ];then
-    echo -e "\e[31m Couldn't find \e[33m$HOME/.bash_profile\e[31m; please add following lines in a bash loader file...\e[m" 
+if  ! [ -e $HOME/.bashrc ];then
+    echo -e "\e[31m Couldn't find \e[33m$HOME/.bashrc\e[31m; please add following lines in a bash loader file...\e[m" 
     echo 'source $HOME/.xlt/.bashxlt'
 else 
-	if [ $(grep -F "source \"\$HOME/.xlt/.bashxlt\"" "$HOME/.bash_profile" | wc -l) -eq 0 ]; then
-	    echo '[[ -e "$HOME/.xlt/.bashxlt" ]] && source "$HOME/.xlt/.bashxlt"' >> "$HOME/.bash_profile"
+	if [ $(grep -F "source \"\$HOME/.xlt/.bashxlt\"" "$HOME/.bashrc" | wc -l) -eq 0 ]; then
+	    echo '[[ -e "$HOME/.xlt/.bashxlt" ]] && source "$HOME/.xlt/.bashxlt"' >> "$HOME/.bashrc"
 	fi;
-	if [ $(grep -F "source \"\$HOME/.bash_profile\"" "$HOME/.bashrc" | wc -l) -eq 0 ]; then
-        echo '[[ -e "$HOME/.bash_profile" ]] && source "$HOME/.bash_profile"' >> "$HOME/.bashrc"
-    fi;
 fi
 chmod +x bin -R 
 echo -e "\e[32mDONE\e[m"
